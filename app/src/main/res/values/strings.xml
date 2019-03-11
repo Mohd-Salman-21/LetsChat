@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LetsChat</string>
+    <string name="invalid_email">Your email is invalid</string>
+    <string name="invalid_password">Your password is too short</string>
+    <string name="incorrect_password">Your password is not correct</string>
+    <string name="filed_required">Please fill all the fields</string>
+    <string name="title_activity_register">RegisterActivity</string>
+
+</resources>
