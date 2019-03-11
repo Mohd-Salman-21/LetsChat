@@ -1,5 +1,6 @@
 package dell.example.com.letschat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +28,10 @@ public class Login_Activity extends AppCompatActivity {
     EditText myEmail;
     EditText myPassword;
 
+    // Progess dialog box
+
+    private ProgressDialog mProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,12 @@ public class Login_Activity extends AppCompatActivity {
 
         myAuth=FirebaseAuth.getInstance();
 
+        //  Progess dialog box while registering
+        mProgress = new ProgressDialog(this);
+        mProgress.setTitle("Processing...");
+        mProgress.setMessage("Please wait...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
 
 
     }
@@ -56,6 +67,10 @@ public class Login_Activity extends AppCompatActivity {
 
     private void SignInUserToFirebase()
     {
+        //Dialog box
+
+        mProgress.show();
+
         String email=myEmail.getText().toString();
         String password=myPassword.getText().toString();
 
@@ -66,7 +81,7 @@ public class Login_Activity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(Login_Activity.this,"Logging In...",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(Login_Activity.this,"Logging In...",Toast.LENGTH_SHORT).show();
 
         myAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -77,6 +92,7 @@ public class Login_Activity extends AppCompatActivity {
                 if(!task.isSuccessful())
                 {
                     showErrorBox("Sign in failed");
+                    mProgress.dismiss();
                 }else{
 
                     Intent intent=new Intent(Login_Activity.this,MainChatActivity.class);

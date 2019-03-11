@@ -1,5 +1,6 @@
 package dell.example.com.letschat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.ContactsContract;
@@ -38,6 +39,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth myAuth;
 
+    // Progess Dialog Box
+
+    private ProgressDialog mProgress;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         myAuth=FirebaseAuth.getInstance();
 
+        //  Progess dialog box while registering
+        mProgress = new ProgressDialog(this);
+        mProgress.setTitle("Processing...");
+        mProgress.setMessage("Please wait...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
 
 
 
@@ -145,14 +159,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createUser()
     {
+
+        mProgress.show();
         // Get the values of email and password
+
 
         String email=myEmail.getText().toString();
         String password=myPassword.getText().toString();
 
         // Call method for firebase
 
-        Toast.makeText(RegisterActivity.this,"Registering...",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(RegisterActivity.this,"Registering...",Toast.LENGTH_SHORT).show();
 
         myAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -164,6 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!task.isSuccessful())
                 {
                     showErrorBox("Oops registration failed");
+                    mProgress.dismiss();
                 }
                 else
                 {
